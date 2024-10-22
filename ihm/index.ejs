@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+</head>
+
+<body>
+    <div style="width: 50%; margin: auto;">
+        <header>
+            <h1>Note app</h1>npm i
+            <nav>
+                <ul>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/apropos">A propos</a></li>
+                </ul>
+            </nav>
+        </header>
+        <section>
+            <form action="/note" method="POST">
+                <input type="hidden" name="id" id="id">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title"><br>
+                <label for="description">Description</label><br>
+                <textarea name="description" id="description" cols="20" rows="5"></textarea>
+                <br>
+                <input type="submit" value="Enrégistrer">
+            </form>
+            <p>-------------------------------------------------------------------------------------</p>
+        </section>
+
+        <section>
+            <h2>Liste des notes</h2>
+            <% for(i=0; i<resultat.length; i++){ %>
+                <h3>
+                    <%= resultat[i].titre %>
+                </h3>
+                <p>
+                    <%= resultat[i].description %>
+                </p>
+                <input type="button" value="Supprimer" onclick="supprimer('<%= resultat[i].id %>')">
+                <input type="button" value="Modifier"
+                    onclick="rempliredonnee('<%= resultat[i].id %>', '<%= resultat[i].titre %>', '<%= resultat[i].description %>')">
+                <% } %>
+        </section>
+    </div>
+
+    <script>
+        function rempliredonnee(id, title, desc) {
+            document.getElementById('id').value = id;
+            document.getElementById('title').value = title;
+            document.getElementById('description').value = desc;
+        }
+
+        function supprimer(id) {
+            let pointFinal = "notes/" + id
+            fetch(
+                pointFinal, {method : "DELETE"}
+            ).then(
+                (reponse)=> reponse.json()
+            ).then(
+                (donnee)=> window.location.href = donnee.routeRacine
+            ).catch((erreur)=> console.log(erreur))
+        }
+    </script>
+</body>
+
+</html>
